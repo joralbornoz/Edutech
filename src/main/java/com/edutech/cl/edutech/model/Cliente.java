@@ -29,6 +29,9 @@ public class Cliente {
     private String apellido;
 
     @Column(nullable = false)
+    private String numTelefono;
+
+    @Column(nullable = false)
     private String correo;
 
     @Column(nullable = false)

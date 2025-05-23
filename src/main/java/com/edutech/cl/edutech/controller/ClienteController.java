@@ -52,6 +52,7 @@ public class ClienteController {
             cli.setRut(cliente.getRut());
             cli.setNombre(cliente.getNombre());
             cli.setApellido(cliente.getApellido());
+            cli.setNumTelefono(cliente.getNumTelefono());
             cli.setCorreo(cliente.getCorreo());
             cli.setFechaNacimiento(cliente.getFechaNacimiento());
 
