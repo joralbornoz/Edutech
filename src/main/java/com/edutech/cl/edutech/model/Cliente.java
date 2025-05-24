@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "cliente")
@@ -37,7 +39,8 @@ public class Cliente {
     @Column(nullable = false)
     private Date fechaNacimiento;
 
-
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    List<Curso> cursoList = new ArrayList<>();
 
 
 
