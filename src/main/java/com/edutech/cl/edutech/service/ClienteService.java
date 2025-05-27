@@ -1,34 +1,72 @@
 package com.edutech.cl.edutech.service;
 
+import com.edutech.cl.edutech.dto.request.ClienteRequestDTO;
+import com.edutech.cl.edutech.dto.response.ClienteDTO;
+import com.edutech.cl.edutech.dto.response.ClienteQueryDTO;
 import com.edutech.cl.edutech.model.Cliente;
 import com.edutech.cl.edutech.repository.ClienteRepository;
-import jakarta.transaction.Transactional;
+import com.edutech.cl.edutech.repository.CursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
-@Transactional
 public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<Cliente> findAll() {
-        return clienteRepository.findAll();
+    @Autowired
+    private CursoRepository cursoRepository;
+
+
+    public List<ClienteDTO> listar(){
+
+        List<ClienteDTO> clienteDTO = clienteRepository.buscarTodos();
+        clienteDTO.forEach(cliente -> {
+            cliente.setCursoList(cursoRepository.findByIdCliente(cliente.getId()));
+        });
+        return clienteDTO;
+
     }
 
-    public Cliente findById(long id) {
-        return clienteRepository.findById(id).get();
-    }
-    public Cliente save(Cliente cliente) {
-        return clienteRepository.save(cliente);
-    }
-    public void delete(Long id) {
-        clienteRepository.deleteById(id);
+
+    public List<ClienteQueryDTO> listarSoloClientes(){
+        return clienteRepository.buscarSoloClientes();
+
     }
 
+
+    public String guardarCliente(ClienteRequestDTO clienteRequestDTO) {
+        Cliente cliente = new Cliente();
+        cliente.setRut(clienteRequestDTO.getRut());
+        cliente.setNombre(clienteRequestDTO.getNombre());
+        cliente.setApellido(clienteRequestDTO.getApellido());
+
+        clienteRepository.save(cliente);
+
+        return "OK";
+    }
+
+
+    public String actualizarCorreoCliente(ClienteRequestDTO clienteRequestDTO) {
+
+        Optional<Cliente> cliente = clienteRepository.findById(clienteRequestDTO.getId());
+        if(cliente.isPresent()){
+            Cliente clienteActualizado = cliente.get();
+            clienteActualizado.setCorreo(clienteRequestDTO.getCorreo());
+            clienteRepository.save(clienteActualizado);
+        }
+        return "OK";
+    }
+
+
+    public String eliminarCliente(Long clienteId) {
+        clienteRepository.deleteById(clienteId);
+        return "OK";
+    }
 }

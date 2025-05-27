@@ -11,12 +11,14 @@ public class CursoDTO {
     private String nombreCurso;
     private String descripcionCurso;
     private String valorCurso;
+    private String metodoPago;
 
     public CursoDTO(Curso curso) {
         this.id = curso.getId();
         this.nombreCurso = curso.getNombreCurso();
         this.descripcionCurso = curso.getDescripcionCurso();
         this.valorCurso = curso.getValorCurso();
+        this.metodoPago = curso.getMetodoPago();
 
     }
 

@@ -30,9 +30,14 @@ public class Curso {
     @Column(nullable = false)
     private String valorCurso;
 
+    @Column(nullable = false)
+    private String metodoPago;
+
     @ManyToOne
     @JoinColumn(name = "id_cliente_fk", nullable = false)
     private Cliente cliente;
+
+
 
 
 }

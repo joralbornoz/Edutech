@@ -1,7 +1,9 @@
 package com.edutech.cl.edutech.controller;
 
 
-import com.edutech.cl.edutech.model.Cliente;
+import com.edutech.cl.edutech.dto.request.ClienteRequestDTO;
+import com.edutech.cl.edutech.dto.response.ClienteDTO;
+import com.edutech.cl.edutech.dto.response.ClienteQueryDTO;
 import com.edutech.cl.edutech.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,60 +20,58 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> listar() {
-        List<Cliente> clientes = clienteService.findAll();
+    public ResponseEntity<List<ClienteDTO>> listar() {
+        List<ClienteDTO> clientes = clienteService.listar();
         if (clientes.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(clientes);
         }
         return ResponseEntity.ok(clientes);
 
     }
 
-    @PostMapping
-    public ResponseEntity<Cliente> guardar(@RequestBody Cliente cliente) {
-        Cliente clienteNuevo = clienteService.save(cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteNuevo);
+    @GetMapping("/solo-clientes")
+    public ResponseEntity<List<ClienteQueryDTO>> listarSoloClientes(){
+        List<ClienteQueryDTO> soloClientes = clienteService.listarSoloClientes();
+
+        return ResponseEntity.ok(soloClientes);
     }
+    @PostMapping
+    public ResponseEntity<String> guardarCliente(@RequestBody ClienteRequestDTO clienteRequestDTODTO) {
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
+        String mensaje = "";
         try{
-            Cliente cliente = clienteService.findById(id);
-            return ResponseEntity.ok(cliente);
-        } catch (Exception e){
-            return ResponseEntity.notFound().build();
+            mensaje = clienteService.guardarCliente(clienteRequestDTODTO);
 
+            return ResponseEntity.status(HttpStatus.OK).body(mensaje);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Cliente> actualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+    @PutMapping
+    public ResponseEntity<String> actualizarCorreoCliente(@RequestBody ClienteRequestDTO clienteRequestDTODTO) {
+        String mensaje = "";
         try{
-            Cliente cli = clienteService.findById(id);
-            cli.setId(id);
-            cli.setRut(cliente.getRut());
-            cli.setNombre(cliente.getNombre());
-            cli.setApellido(cliente.getApellido());
-            cli.setNumTelefono(cliente.getNumTelefono());
-            cli.setCorreo(cliente.getCorreo());
-            cli.setFechaNacimiento(cliente.getFechaNacimiento());
+            mensaje = clienteService.actualizarCorreoCliente(clienteRequestDTODTO);
 
-            clienteService.save(cli);
-            return ResponseEntity.ok(cliente);
-        } catch (Exception e){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.OK).body(mensaje);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Cliente> eliminar(@PathVariable Long id) {
+    public ResponseEntity<String> eliminarCliente(@PathVariable Long id) {
+        String mensaje = "";
         try{
-            clienteService.delete(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e){
-            return ResponseEntity.notFound().build();
+            mensaje = clienteService.eliminarCliente(id);
+
+            return ResponseEntity.status(HttpStatus.OK).body(mensaje);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
 }
 

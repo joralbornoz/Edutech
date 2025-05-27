@@ -42,8 +42,4 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     List<Curso> cursoList = new ArrayList<>();
 
-
-
-
-
 }

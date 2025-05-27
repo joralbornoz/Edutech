@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface CursoRepository extends JpaRepository<Curso, Long> {
 
-    @Query("select mew com.edutech.cl.edutech.dto.response.CursoDTO(a)" +
-            "from Curso cu" +
-            " where cu.cliente.id = idCliente")
-    List<CursoDTO> findAllCursos(@Param("idCliente") Long idCliente);
+    @Query("select new com.edutech.cl.edutech.dto.response.CursoDTO(cu)" +
+            " from Curso cu " +
+            " where cu.cliente.id = :idCliente ")
+    List<CursoDTO> findByIdCliente(@Param("idCliente") Long idCliente);
 }
