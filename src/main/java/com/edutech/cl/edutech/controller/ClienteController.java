@@ -19,7 +19,7 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<ClienteDTO>> listar() {
         List<ClienteDTO> clientes = clienteService.listar();
         if (clientes.isEmpty()) {
@@ -36,11 +36,11 @@ public class ClienteController {
         return ResponseEntity.ok(soloClientes);
     }
     @PostMapping
-    public ResponseEntity<String> guardarCliente(@RequestBody ClienteRequestDTO clienteRequestDTODTO) {
+    public ResponseEntity<String> guardarCliente(@RequestBody ClienteRequestDTO clienteRequestDTO) {
 
         String mensaje = "";
         try{
-            mensaje = clienteService.guardarCliente(clienteRequestDTODTO);
+            mensaje = clienteService.guardarCliente(clienteRequestDTO);
 
             return ResponseEntity.status(HttpStatus.OK).body(mensaje);
         }
@@ -49,10 +49,10 @@ public class ClienteController {
         }
     }
     @PutMapping
-    public ResponseEntity<String> actualizarCorreoCliente(@RequestBody ClienteRequestDTO clienteRequestDTODTO) {
+    public ResponseEntity<String> actualizarCorreoCliente(@RequestBody ClienteRequestDTO clienteRequestDTO) {
         String mensaje = "";
         try{
-            mensaje = clienteService.actualizarCorreoCliente(clienteRequestDTODTO);
+            mensaje = clienteService.actualizarCorreoCliente(clienteRequestDTO);
 
             return ResponseEntity.status(HttpStatus.OK).body(mensaje);
         }

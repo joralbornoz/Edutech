@@ -30,22 +30,27 @@ public class ClienteService {
         clienteDTO.forEach(cliente -> {
             cliente.setCursoList(cursoRepository.findByIdCliente(cliente.getId()));
         });
+
         return clienteDTO;
 
     }
 
 
     public List<ClienteQueryDTO> listarSoloClientes(){
+
         return clienteRepository.buscarSoloClientes();
 
     }
 
 
     public String guardarCliente(ClienteRequestDTO clienteRequestDTO) {
+
         Cliente cliente = new Cliente();
         cliente.setRut(clienteRequestDTO.getRut());
         cliente.setNombre(clienteRequestDTO.getNombre());
         cliente.setApellido(clienteRequestDTO.getApellido());
+        cliente.setCorreo(clienteRequestDTO.getCorreo());
+        cliente.setNumTelefono(clienteRequestDTO.getNumTelefono());
 
         clienteRepository.save(cliente);
 
@@ -61,6 +66,7 @@ public class ClienteService {
             clienteActualizado.setCorreo(clienteRequestDTO.getCorreo());
             clienteRepository.save(clienteActualizado);
         }
+
         return "OK";
     }
 

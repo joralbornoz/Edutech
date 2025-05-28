@@ -12,12 +12,12 @@ import java.util.List;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    @Query("SELECT distinct new com.edutech.cl.edutech.dto.response.ClienteDTO(c.id, c.nombre, c.apellido) " +
+    @Query("SELECT distinct new com.edutech.cl.edutech.dto.response.ClienteDTO(c.id, c.rut, c.nombre, c.apellido, c.correo, c.numTelefono) " +
             "FROM Cliente c " +
             "left join Curso cu on c.id = cu.cliente.id")
     List<ClienteDTO> buscarTodos();
 
-    @Query(value = "select id, apellido, correo from cliente", nativeQuery = true)
+    @Query(value = "select id, nombre, apellido, correo from cliente", nativeQuery = true)
     List<ClienteQueryDTO> buscarSoloClientes();
 
 }

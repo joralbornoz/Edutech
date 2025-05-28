@@ -21,20 +21,20 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String nombreCurso;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String descripcionCurso;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String valorCurso;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String metodoPago;
 
     @ManyToOne
-    @JoinColumn(name = "id_cliente_fk", nullable = false)
+    @JoinColumn(name = "id_cliente_fk")
     private Cliente cliente;
 
 

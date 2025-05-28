@@ -24,20 +24,18 @@ public class Cliente {
     @Column(unique = true, length = 13, nullable = false)
     private String rut;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String apellido;
 
-    @Column(nullable = false)
-    private String numTelefono;
-
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String correo;
 
-    @Column(nullable = false)
-    private Date fechaNacimiento;
+    @Column(nullable = true)
+    private String numTelefono;
+
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     List<Curso> cursoList = new ArrayList<>();

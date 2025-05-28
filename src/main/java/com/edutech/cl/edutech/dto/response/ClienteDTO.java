@@ -17,7 +17,6 @@ public class ClienteDTO {
     private String apellido;
     private String correo;
     private String numTelefono;
-    private Date fechaNacimiento;
     List<CursoDTO> cursoList = new ArrayList<>();
 
     public ClienteDTO(Cliente cliente) {
@@ -27,14 +26,16 @@ public class ClienteDTO {
         this.apellido = cliente.getApellido();
         this.correo = cliente.getCorreo();
         this.numTelefono = cliente.getNumTelefono();
-        this.fechaNacimiento = cliente.getFechaNacimiento();
 
     }
 
-    public ClienteDTO(Long id, String nombre, String apellido) {
+    public ClienteDTO(Long id, String rut, String nombre, String apellido, String correo, String numTelefono) {
         this.id = id;
+        this.rut = rut;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.correo = correo;
+        this.numTelefono = numTelefono;
 
     }
 
