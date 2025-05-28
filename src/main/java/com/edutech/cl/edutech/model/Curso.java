@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -33,11 +35,11 @@ public class Curso {
     @Column(nullable = true)
     private String metodoPago;
 
+    @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
+    List<MetodoPago> metodoPagoList = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "id_cliente_fk")
     private Cliente cliente;
-
-
-
 
 }

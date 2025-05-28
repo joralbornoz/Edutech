@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table (name = "MetodoPago")
 @Data
@@ -22,13 +25,14 @@ public class MetodoPago {
     private String tipoPago;
 
     @Column(nullable = true)
-    private Double monto;
+    private double monto;
 
     @Column(nullable = true)
     private boolean enCuotas;
 
     @Column(nullable = true)
     private int numeroCuotas;
+
 
     @ManyToOne
     @JoinColumn(name = "id_curso_fk")

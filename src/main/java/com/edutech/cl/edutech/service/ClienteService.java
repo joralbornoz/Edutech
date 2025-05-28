@@ -54,7 +54,7 @@ public class ClienteService {
 
         clienteRepository.save(cliente);
 
-        return "OK";
+        return "Cliente guardado con exito";
     }
 
 
@@ -73,6 +73,6 @@ public class ClienteService {
 
     public String eliminarCliente(Long clienteId) {
         clienteRepository.deleteById(clienteId);
-        return "OK";
+        return "Cliente eliminado con Exito";
     }
 }

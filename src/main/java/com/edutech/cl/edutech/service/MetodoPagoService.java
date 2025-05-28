@@ -2,6 +2,7 @@ package com.edutech.cl.edutech.service;
 
 
 import com.edutech.cl.edutech.dto.request.MetodoPagoRequestDTO;
+import com.edutech.cl.edutech.dto.response.*;
 import com.edutech.cl.edutech.model.Curso;
 import com.edutech.cl.edutech.model.MetodoPago;
 import com.edutech.cl.edutech.repository.CursoRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,6 +23,12 @@ public class MetodoPagoService {
 
     @Autowired
     private CursoRepository cursoRepository;
+
+    public List<MetodoPagoQueryDTO> listarSoloMetodoPagos() {
+
+        return metodoPagoRepository.buscarSoloMetodoPagos();
+
+    }
 
     public String crearMetodoPago(Long cursoId, MetodoPagoRequestDTO metodoPagoRequestDTO) {
         Optional<Curso> cursoOpt = cursoRepository.findById(cursoId);
@@ -41,21 +49,17 @@ public class MetodoPagoService {
             if (metodoPagoRequestDTO.getMonto() == null) {
                 return "El monto es obligatorio para método de pago débito.";
             }
-            // En cuotas no aplica
-            // Como enCuotas es boolean, asumimos false en este caso
-            // y número de cuotas 0
-            // No es necesario modificar el DTO aquí, solo en la creación
-            // Además, si quieres asegurarte, puedes hacerlo
+
         } else {
-            // Para crédito
+            // cuando es tarjeta Credito
             boolean enCuotas = metodoPagoRequestDTO.isEnCuotas();
             if (!enCuotas) {
-                // No cuotas: número de cuotas 0
+                // Sin cuota: número de cuotas 0
                 metodoPagoRequestDTO.setNumeroCuotas(0);
             } else {
                 // Si enCuotas es true, verificar número
                 if (metodoPagoRequestDTO.getNumeroCuotas() <= 0) {
-                    return "Debe ingresar una cantidad válida de cuotas.";
+                    return "Debe ingresar una cantidad válida de cuotas, mayor que 0.";
                 }
             }
             // Validar monto
@@ -69,9 +73,15 @@ public class MetodoPagoService {
         metodoPago.setMonto(metodoPagoRequestDTO.getMonto());
         metodoPago.setEnCuotas(metodoPagoRequestDTO.isEnCuotas());
         metodoPago.setNumeroCuotas(metodoPagoRequestDTO.getNumeroCuotas());
+        metodoPago.setCurso(curso);
 
         metodoPagoRepository.save(metodoPago);
 
-        return "OK";
+        return "Pago creado correctamente.";
+    }
+
+    public String eliminarPago(Long metodoPagoId) {
+        metodoPagoRepository.deleteById(metodoPagoId);
+        return "Pago Eliminado";
     }
 }
