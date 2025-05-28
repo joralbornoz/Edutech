@@ -23,20 +23,18 @@ public class CursoService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-   public String crearCurso(CursoRequestDTO cursoRequestDTO) {
-       Curso curso = new Curso();
-       curso.setNombreCurso(cursoRequestDTO.getNombreCurso());
-       curso.setDescripcionCurso(cursoRequestDTO.getDescripcionCurso());
-       curso.setValorCurso(cursoRequestDTO.getValorCurso());
-       curso.setMetodoPago(cursoRequestDTO.getMetodoPago());
-
-       // Obtener el cliente por ID
-       Optional<Cliente> clienteOpt = clienteRepository.findById(cursoRequestDTO.getIdCurso());
+   public String crearCurso(long clienteId, CursoRequestDTO cursoRequestDTO) {
+       Optional<Cliente> clienteOpt = clienteRepository.findById(clienteId);
        if (!clienteOpt.isPresent()) {
            return "Cliente no encontrado";
        }
        Cliente cliente = clienteOpt.get();
 
+       Curso curso = new Curso();
+       curso.setNombreCurso(cursoRequestDTO.getNombreCurso());
+       curso.setDescripcionCurso(cursoRequestDTO.getDescripcionCurso());
+       curso.setValorCurso(cursoRequestDTO.getValorCurso());
+       curso.setMetodoPago(cursoRequestDTO.getMetodoPago());
        curso.setCliente(cliente);
 
        cursoRepository.save(curso);

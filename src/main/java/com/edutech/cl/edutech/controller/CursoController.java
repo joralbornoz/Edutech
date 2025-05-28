@@ -22,12 +22,12 @@ public class CursoController {
     private ClienteService clienteService;
 
 
-    @PostMapping("/{id}")
-    public ResponseEntity<String> crearCurso(@PathVariable Long id, @RequestBody CursoRequestDTO cursoRequestDTO) {
+    @PostMapping("/crearCurso/{id}")
+    public ResponseEntity<String> crearCurso(@PathVariable ("id") Long id, @RequestBody CursoRequestDTO cursoRequestDTO) {
 
         String mensaje = "";
         try{
-            mensaje = cursoService.crearCurso(cursoRequestDTO);
+            mensaje = cursoService.crearCurso(id, cursoRequestDTO);
 
             return ResponseEntity.status(HttpStatus.OK).body(mensaje);
         }
