@@ -1,33 +1,31 @@
 package com.edutech.cl.edutech.controller;
 
 
-
 import com.edutech.cl.edutech.dto.request.CursoRequestDTO;
-import com.edutech.cl.edutech.dto.response.CursoDTO;
-import com.edutech.cl.edutech.service.ClienteService;
+import com.edutech.cl.edutech.dto.request.MetodoPagoRequestDTO;
 import com.edutech.cl.edutech.service.CursoService;
+import com.edutech.cl.edutech.service.MetodoPagoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/cursos")
+@RequestMapping("/api/v1/metodoPago")
+public class MetodoPagoController {
 
-public class CursoController {
+    @Autowired
+    MetodoPagoService metodoPagoService;
 
     @Autowired
     private CursoService cursoService;
-    @Autowired
-    private ClienteService clienteService;
 
-
-    @PostMapping("/crearCurso/{id}")
-    public ResponseEntity<String> crearCurso(@PathVariable ("id") Long id, @RequestBody CursoRequestDTO cursoRequestDTO) {
+    @PostMapping("/crearMetodoPago/{id}")
+    public ResponseEntity<String> crearMetodoPago(@PathVariable("id") Long id, @RequestBody MetodoPagoRequestDTO metodoPagoRequestDTO) {
 
         String mensaje = "";
         try{
-            mensaje = cursoService.crearCurso(id, cursoRequestDTO);
+            mensaje = metodoPagoService.crearMetodoPago(id, metodoPagoRequestDTO);
 
             return ResponseEntity.status(HttpStatus.OK).body(mensaje);
         }

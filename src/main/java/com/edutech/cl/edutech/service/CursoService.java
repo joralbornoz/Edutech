@@ -1,7 +1,6 @@
 package com.edutech.cl.edutech.service;
 
 import com.edutech.cl.edutech.dto.request.CursoRequestDTO;
-import com.edutech.cl.edutech.dto.response.CursoDTO;
 import com.edutech.cl.edutech.model.Cliente;
 import com.edutech.cl.edutech.model.Curso;
 import com.edutech.cl.edutech.repository.ClienteRepository;
@@ -10,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.Optional;
 
 @Repository
