@@ -5,10 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 @Entity
 @Table(name = "cliente")
 @Data
@@ -18,26 +14,15 @@ import java.util.List;
 public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(unique = true, length = 13, nullable = false)
+    private Integer id;
     private String rut;
-
-    @Column(nullable = true)
     private String nombre;
-
-    @Column(nullable = true)
     private String apellido;
-
-    @Column(nullable = true)
     private String correo;
+    private Integer numTelefono;
 
-    @Column(nullable = true)
-    private String numTelefono;
-
-
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    List<Curso> cursoList = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "codigo_curso", nullable = false)
+    private Curso curso;
 
 }

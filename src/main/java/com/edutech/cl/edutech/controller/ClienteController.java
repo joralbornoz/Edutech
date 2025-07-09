@@ -1,13 +1,10 @@
 package com.edutech.cl.edutech.controller;
 
-
-import com.edutech.cl.edutech.dto.request.ClienteRequestDTO;
-import com.edutech.cl.edutech.dto.response.ClienteDTO;
-import com.edutech.cl.edutech.dto.response.ClienteQueryDTO;
+import com.edutech.cl.edutech.model.Cliente;
 import com.edutech.cl.edutech.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,65 +14,44 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/v1/clientes")
+@RequestMapping("/api/clientes")
+@Tag(name = "Clientes", description = "Operaciones relacionadas con Clientes")
+
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<ClienteDTO>> listar() {
-        List<ClienteDTO> clientes = clienteService.listar();
-        if (clientes.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(clientes);
-        }
-        return ResponseEntity.ok(clientes);
+    @GetMapping
+    @Operation(summary = "Obtener todos los clientes", description = "Obtiene lista de todo los clientes")
+    public List<Cliente> getAllClientes() {
+        return clienteService.findAll();
 
     }
 
-    @GetMapping("/solo-clientes")
-    public ResponseEntity<List<ClienteQueryDTO>> listarSoloClientes(){
-        List<ClienteQueryDTO> soloClientes = clienteService.listarSoloClientes();
-
-        return ResponseEntity.ok(soloClientes);
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtiene datos de un cliente", description = "Obtiene informacion de un cliente por id")
+    public Cliente getClienteById(@PathVariable Integer id) {
+        return clienteService.findById(id);
     }
+
     @PostMapping
-    public ResponseEntity<String> guardarCliente(@RequestBody ClienteRequestDTO clienteRequestDTO) {
-
-        String mensaje = "";
-        try{
-            mensaje = clienteService.guardarCliente(clienteRequestDTO);
-
-            return ResponseEntity.status(HttpStatus.OK).body(mensaje);
-        }
-        catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-    @PutMapping
-    public ResponseEntity<String> actualizarCorreoCliente(@RequestBody ClienteRequestDTO clienteRequestDTO) {
-        String mensaje = "";
-        try{
-            mensaje = clienteService.actualizarCorreoCliente(clienteRequestDTO);
-
-            return ResponseEntity.status(HttpStatus.OK).body(mensaje);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    @Operation(summary = "Crea datos de un cliente", description = "Crea informacion de un cliente")
+    public Cliente createCliente(@RequestBody Cliente cliente) {
+        return clienteService.save(cliente);
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualiza datos de un cliente", description = "Actualiza informacion de un cliente por id")
+    public Cliente updateCliente(@PathVariable Integer id, @RequestBody Cliente cliente) {
+        cliente.setId(id);
+        return clienteService.save(cliente);
+    }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarCliente(@PathVariable Long id) {
-        String mensaje = "";
-        try{
-            mensaje = clienteService.eliminarCliente(id);
-
-            return ResponseEntity.status(HttpStatus.OK).body(mensaje);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    @Operation(summary = "Elimina un cliente", description = "Eliminacion de cliente por id")
+    public void deleteClientes(@PathVariable Integer id){
+            clienteService.deleteById(id);
     }
 }
+
 

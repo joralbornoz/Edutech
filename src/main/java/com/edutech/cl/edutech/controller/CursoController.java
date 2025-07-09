@@ -1,18 +1,11 @@
 package com.edutech.cl.edutech.controller;
 
-
-
-import com.edutech.cl.edutech.dto.request.CursoRequestDTO;
-import com.edutech.cl.edutech.dto.response.ClienteDTO;
-import com.edutech.cl.edutech.dto.response.ClienteQueryDTO;
-import com.edutech.cl.edutech.dto.response.CursoDTO;
-import com.edutech.cl.edutech.dto.response.CursoQueryDTO;
 import com.edutech.cl.edutech.model.Curso;
-import com.edutech.cl.edutech.service.ClienteService;
 import com.edutech.cl.edutech.service.CursoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,58 +15,47 @@ import java.util.List;
  * Gabriel Ferrufino Rivera
  */
 @RestController
-@RequestMapping("/api/v1/cursos")
+@RequestMapping("/api/cursos")
+@Tag(name = "Cursos", description = "Operaciones relacionadas con Cursos")
 
 public class CursoController {
 
     @Autowired
     private CursoService cursoService;
-    @Autowired
-    private ClienteService clienteService;
 
-
-    @PostMapping("/crearCurso/{id}")
-    public ResponseEntity<String> crearCurso(@PathVariable ("id") Long id, @RequestBody CursoRequestDTO cursoRequestDTO) {
-
-        String mensaje = "";
-        try{
-            mensaje = cursoService.crearCurso(id, cursoRequestDTO);
-
-            return ResponseEntity.status(HttpStatus.OK).body(mensaje);
-        }
-        catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    @GetMapping
+    @Operation(summary = "Obtener todos los cursos", description = "Obtiene lista de todo los cursos")
+    public List<Curso> getAllCursos() {
+        return cursoService.findAll();
     }
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<CursoDTO>> listar() {
-        List<CursoDTO> curso = cursoService.listar();
-        if (curso.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(curso);
-        }
-        return ResponseEntity.ok(curso);
 
+
+    @GetMapping("/{codigo}")
+    @Operation(summary = "Obtiene datos de un curso",
+            description = "Obtiene informacion de un curso por codigo")
+    public Curso getCursoByCodigo(@PathVariable String codigo) {
+        return cursoService.findByCodigo(codigo);
     }
 
-    @GetMapping("/solo-cursos")
-    public ResponseEntity<List<CursoQueryDTO>> listarSoloCursos() {
-        List<CursoQueryDTO> soloCursos = cursoService.listarSoloCursos();
 
-        return ResponseEntity.ok(soloCursos);
+
+
+    @PostMapping
+    @Operation(summary = "Crea curso", description = "Crea informacion de un curso para ser adquerido")
+    public Curso createCurso(@RequestBody Curso curso) {
+        return cursoService.save(curso);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarCurso(@PathVariable Long id) {
-        String mensaje = "";
-        try{
-            mensaje = cursoService.eliminarCurso(id);
-
-            return ResponseEntity.status(HttpStatus.OK).body(mensaje);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    @PutMapping("/{codigo}")
+    @Operation(summary = "Actualiza informacion de un curso", description = "Actualiza curso por id")
+    public Curso updateCurso(@PathVariable String codigo, @RequestBody Curso curso) {
+        curso.setCodigo(codigo);
+        return cursoService.save(curso);
     }
-
+    @DeleteMapping("/{codigo}")
+    @Operation(summary = "Elimina un curso del sistema", description = "Eliminacion de curso por su codigo")
+    public void deleteCurso(@PathVariable String codigo) {
+        cursoService.deleteByCodigo(codigo);
+    }
 }

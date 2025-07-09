@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Table (name = "MetodoPago")
@@ -18,24 +17,16 @@ import java.util.List;
 public class MetodoPago {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = true)
+    private Integer id;
+    private Date fechaCompra;
     private String tipoPago;
-
-    @Column(nullable = true)
-    private double monto;
-
-    @Column(nullable = true)
-    private boolean enCuotas;
-
-    @Column(nullable = true)
-    private int numeroCuotas;
+    private Integer monto;
+    private String enCuotas;
+    private Integer numeroCuotas;
 
 
     @ManyToOne
-    @JoinColumn(name = "id_curso_fk")
-    private Curso curso;
+    @JoinColumn(name = "id_cliente", nullable = false)
+    private Cliente cliente;
 
 }
